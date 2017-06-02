@@ -11,13 +11,17 @@ A TextView with resizable drawables and easier to set clicked and selected drawa
 ### 添加依赖：
 
 本项目已同步到JCenter，可直接添加以来使用：
+
+```Java
 dependencies {
     compile 'com.geejoe:drawabletextview:1.0.2'
 }
+```
 
 ### 使用方法：
 
 示例：
+```xml
 <com.geejoe.drawabletextview.DrawableTextView
         android:id="@+id/dt"
         android:layout_width="match_parent"
@@ -29,9 +33,9 @@ dependencies {
         app:leftDrawableWidth="20dp"
         app:leftClickedDrawable="@drawable/ic_2"   <!--点击时的drawable-->
         app:clickedTextColor="@color/colorPrimary" <!--点击时的字体颜色-->
-				app:leftSelectedDrawable="@drawable/ic_2"  <!--选中时的drawable-->
-        app:selectedTextColor="@color/colorPrimary"<!--选中时的字体颜色-->
-				/>  
+	app:leftSelectedDrawable="@drawable/ic_2"  <!--选中时的drawable-->
+        app:selectedTextColor="@color/colorPrimary"/><!--选中时的字体颜色-->  
+```
 
 ## 注意：当设置了selectedDrawable之后，clickedDrawable将失效（实际应用中也不会需要点击和选中时效果不一样吧...）<br>
 ## 设置selectedDrawable之后，只需要在代码中相应的位置执行setSelected(boolean selected)方法即可切换选中效果
