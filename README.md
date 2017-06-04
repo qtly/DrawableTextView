@@ -1,12 +1,15 @@
 # DrawableTextView
 A TextView with resizable drawables and easier to set clicked and selected drawable
 
-## v1.0.2<br>
+## v1.0.3<br>
 
 ### 简介：
 
 这是一个继承自TextView的组件，解决了原生TextView添加drawableLeft等不能在xml中定义大小的问题，<br>
 并且实现了可直接在xml中定义点击和选择时的drawable效果及字体颜色，特别适用于制作Tab和需要图片修饰的item<br>
+
+## 效果图
+![](https://github.com/GeeJoe/DrawableTextView/raw/master/gif/2017-06-04_21_33_49.gif)
 
 ### 添加依赖：
 
