@@ -3,6 +3,8 @@ A TextView with resizable drawables and easier to set clicked and selected drawa
 
 ## v1.0.3<br>
 
+[ ![Download](https://api.bintray.com/packages/geejoe/maven/drawabletextview/images/download.svg) ](https://bintray.com/geejoe/maven/drawabletextview/_latestVersion)
+
 ### 简介：
 
 这是一个继承自TextView的组件，解决了原生TextView添加drawableLeft等不能在xml中定义大小的问题，<br>
