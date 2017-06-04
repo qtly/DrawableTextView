@@ -272,6 +272,6 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
                 }
                 break;
         }
-        return true;
+        return false;
     }
 }

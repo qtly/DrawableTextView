@@ -40,10 +40,10 @@ ext {
 
     libraryDescription = 'A TextView with resizable drawables and easier to set clicked and selected drawable'
 
-    siteUrl = 'https://github.com/JoeLeeDreamer/DrawableTextView'
-    gitUrl = 'https://github.com/JoeLeeDreamer/DrawableTextView.git'
+    siteUrl = 'https://github.com/GeeJoe/DrawableTextView'
+    gitUrl = 'https://github.com/GeeJoe/DrawableTextView.git'
 
-    libraryVersion = '1.0.2'
+    libraryVersion = '1.0.3'
 
     developerId = 'geejoe'
     developerName = 'GeeJoe'
