@@ -142,3 +142,6 @@ dependencies {
 
 #### 3> 提供OnNavSelectedListener接口,不用再设置繁琐的OnClickListener
 NavLayout提供OnNavSelectedListener接口，实现该接口可以监听导航点击事件
+
+#### 4> setDefaultSelected(int index)设置默认选中
+NavLayout的setDefaultSelected(int index)设置默认选中导航，index为NavLayout中添加的DrawableTextView顺序，0为第一个
