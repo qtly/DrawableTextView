@@ -7,7 +7,9 @@ package com.geejoe.drawabletextview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -54,6 +56,14 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
     private int selectedTextColor;
     private int clickedTextColor;
 
+    private int selectedColor;
+    private int clickedColor;
+
+    private boolean isEasySelectedColor = false;
+    private boolean isEasyClickedColor = false;
+
+    private OnDTClickListener onDTClickListener;
+
     public DrawableTextView(Context context) {
         this(context, null, 0);
     }
@@ -65,10 +75,11 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
     public DrawableTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
+        initSize();
     }
 
     private void init(Context context, AttributeSet attrs) {
-        setWillNotDraw(false);
+        setClickable(true);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DrawableTextView);
 
@@ -103,9 +114,19 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
         defaultTextColor = a.getColor(R.styleable.DrawableTextView_defaultTextColor, Color.BLACK);
         selectedTextColor = a.getColor(R.styleable.DrawableTextView_selectedTextColor, Color.BLACK);
         clickedTextColor = a.getColor(R.styleable.DrawableTextView_clickedTextColor, Color.BLACK);
+
+        selectedColor = a.getColor(R.styleable.DrawableTextView_selectedColor, -1);
+        clickedColor = a.getColor(R.styleable.DrawableTextView_clickedColor, -1);
+
+        if (selectedColor != -1) {
+            isEasySelectedColor = true;
+        }
+        if (clickedColor != -1) {
+            isEasyClickedColor = true;
+        }
         a.recycle();
 
-        if (leftSelectedDrawable != null || rightSelectedDrawable != null ||
+        if (isEasySelectedColor || leftSelectedDrawable != null || rightSelectedDrawable != null ||
                 topSelectedDrawable != null || bottomSelectedDrawable != null) {
             selectable = true;
         }
@@ -118,9 +139,7 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    private void initSize() {
         if (leftDrawable != null) {
             leftDrawable.setBounds(0, 0, leftDrawableWidth, leftDrawableHeight);
         }
@@ -172,7 +191,6 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
         if (bottomShowDrawable != null) {
             bottomShowDrawable.setBounds(0, 0, bottomDrawableWidth, bottomDrawableHeight);
         }
-
         draw();
     }
 
@@ -203,35 +221,63 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
     public void setSelected(boolean selected) {
         if (selectable) {
             if (selected) {
-                if (leftSelectedDrawable != null && leftDrawable != null) {
+                if (isEasySelectedColor && leftDrawable != null) {
+                    setLeftDrawable(changeColor(leftDrawable,selectedColor));
+                    setTextColor(selectedColor);
+                } else if (leftSelectedDrawable != null && leftDrawable != null) {
                     setLeftDrawable(leftSelectedDrawable);
+                    setTextColor(selectedTextColor);
                 }
-                if (rightSelectedDrawable != null && rightDrawable != null) {
+                if (isEasySelectedColor && rightDrawable != null) {
+                    setRightDrawable(changeColor(rightDrawable,selectedColor));
+                    setTextColor(selectedColor);
+                } else if (rightSelectedDrawable != null && rightDrawable != null) {
                     setRightDrawable(rightSelectedDrawable);
+                    setTextColor(selectedTextColor);
                 }
-                if (bottomSelectedDrawable != null && bottomDrawable != null) {
+                if (isEasySelectedColor && bottomDrawable != null) {
+                    setBottomDrawable(changeColor(bottomDrawable,selectedColor));
+                    setTextColor(selectedColor);
+                } else if (bottomSelectedDrawable != null && bottomDrawable != null) {
                     setBottomDrawable(bottomSelectedDrawable);
+                    setTextColor(selectedTextColor);
                 }
-                if (topSelectedDrawable != null && topDrawable != null) {
+                if (isEasySelectedColor && topDrawable != null) {
+                    setTopDrawable(changeColor(topDrawable,selectedColor));
+                    setTextColor(selectedColor);
+                } else if (topSelectedDrawable != null && topDrawable != null) {
                     setTopDrawable(topSelectedDrawable);
+                    setTextColor(selectedTextColor);
                 }
-                setTextColor(selectedTextColor);
             } else {
-                if (leftSelectedDrawable != null && leftDrawable != null) {
-                    setLeftDrawable(leftDrawable);
+                if ((leftSelectedDrawable != null || isEasySelectedColor) && leftDrawable != null) {
+                    setLeftDrawable(resumeColor(leftDrawable));
                 }
-                if (rightSelectedDrawable != null && rightDrawable != null) {
-                    setRightDrawable(rightDrawable);
+                if ((rightSelectedDrawable != null || isEasySelectedColor) && rightDrawable != null) {
+                    setRightDrawable(resumeColor(rightDrawable));
                 }
-                if (topSelectedDrawable != null && topDrawable != null) {
-                    setTopDrawable(topDrawable);
+                if ((topSelectedDrawable != null || isEasySelectedColor) && topDrawable != null) {
+                    setTopDrawable(resumeColor(topDrawable));
                 }
-                if (bottomSelectedDrawable != null && bottomDrawable != null) {
-                    setBottomDrawable(bottomDrawable);
+                if ((bottomSelectedDrawable != null || isEasySelectedColor) && bottomDrawable != null) {
+                    setBottomDrawable(resumeColor(bottomDrawable));
                 }
                 setTextColor(defaultTextColor);
             }
         }
+    }
+
+    private Drawable changeColor(Drawable drawable, int color) {
+        Drawable dc = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTintMode(dc, PorterDuff.Mode.SRC_IN);
+        DrawableCompat.setTint(dc, color);
+        return dc;
+    }
+
+    private Drawable resumeColor(Drawable drawable) {
+        Drawable dc = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTintMode(dc, PorterDuff.Mode.DST_IN);
+        return dc;
     }
 
     @Override
@@ -239,39 +285,84 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (!selectable) {
-                    if (leftClickedDrawable != null && leftDrawable != null) {
+                    if (isEasyClickedColor && leftDrawable != null) {
+                        setLeftDrawable(changeColor(leftDrawable,clickedColor));
+                        setTextColor(clickedColor);
+                    } else if (leftClickedDrawable != null && leftDrawable != null) {
                         setLeftDrawable(leftClickedDrawable);
+                        setTextColor(clickedTextColor);
                     }
-                    if (rightClickedDrawable != null && rightDrawable != null) {
+                    if (isEasyClickedColor && rightDrawable != null) {
+                        setRightDrawable(changeColor(rightDrawable,clickedColor));
+                        setTextColor(clickedColor);
+                    } else if (rightClickedDrawable != null && rightDrawable != null) {
                         setRightDrawable(rightClickedDrawable);
+                        setTextColor(clickedTextColor);
                     }
-                    if (topClickedDrawable != null && topDrawable != null) {
+                    if (isEasyClickedColor && topDrawable != null) {
+                        setTopDrawable(changeColor(topDrawable,clickedColor));
+                        setTextColor(clickedColor);
+                    } else if (topClickedDrawable != null && topDrawable != null) {
                         setTopDrawable(topClickedDrawable);
+                        setTextColor(clickedTextColor);
                     }
-                    if (bottomClickedDrawable != null && bottomDrawable != null) {
+                    if (isEasyClickedColor && bottomDrawable != null) {
+                        setBottomDrawable(changeColor(bottomDrawable,clickedColor));
+                        setTextColor(clickedColor);
+                    } else if (bottomClickedDrawable != null && bottomDrawable != null) {
                         setBottomDrawable(bottomClickedDrawable);
+                        setTextColor(clickedTextColor);
                     }
-                    setTextColor(clickedTextColor);
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                if (isTouchPointInView(this, (int) event.getRawX(), (int) event.getRawY())) {
+                    if (onDTClickListener != null) {
+                        onDTClickListener.onDTClick(this);
+                    }
+                }
                 if (!selectable) {
-                    if (leftClickedDrawable != null && leftDrawable != null) {
-                        setLeftDrawable(leftDrawable);
+                    if ((leftClickedDrawable != null || isEasyClickedColor) && leftDrawable != null) {
+                        setLeftDrawable(resumeColor(leftDrawable));
                     }
-                    if (rightClickedDrawable != null && rightDrawable != null) {
-                        setRightDrawable(rightDrawable);
+                    if ((rightClickedDrawable != null || isEasyClickedColor) && rightDrawable != null) {
+                        setRightDrawable(resumeColor(rightDrawable));
                     }
-                    if (topClickedDrawable != null && topDrawable != null) {
-                        setTopDrawable(topDrawable);
+                    if ((topClickedDrawable != null || isEasyClickedColor) && topDrawable != null) {
+                        setTopDrawable(resumeColor(topDrawable));
                     }
-                    if (bottomClickedDrawable != null && bottomDrawable != null) {
-                        setBottomDrawable(bottomDrawable);
+                    if ((bottomClickedDrawable != null || isEasyClickedColor) && bottomDrawable != null) {
+                        setBottomDrawable(resumeColor(bottomDrawable));
                     }
                     setTextColor(defaultTextColor);
                 }
                 break;
         }
         return false;
+    }
+
+    private boolean isTouchPointInView(View view, int x, int y) {
+        if (view == null) {
+            return false;
+        }
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int left = location[0];
+        int top = location[1];
+        int right = left + view.getMeasuredWidth();
+        int bottom = top + view.getMeasuredHeight();
+        if (y >= top && y <= bottom && x >= left
+                && x <= right) {
+            return true;
+        }
+        return false;
+    }
+
+    public void setOnDTClickListener(OnDTClickListener onDTClickListener) {
+        this.onDTClickListener = onDTClickListener;
+    }
+
+    public interface OnDTClickListener {
+        void onDTClick(View v);
     }
 }
