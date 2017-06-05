@@ -111,7 +111,7 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
         bottomDrawableWidth = dp2px(context, a.getDimensionPixelSize(R.styleable.DrawableTextView_bottomDrawableWidth, 0));
         bottomDrawableHeight = dp2px(context, a.getDimensionPixelSize(R.styleable.DrawableTextView_bottomDrawableHeight, 0));
 
-        defaultTextColor = a.getColor(R.styleable.DrawableTextView_defaultTextColor, Color.BLACK);
+        defaultTextColor = getCurrentTextColor();
         selectedTextColor = a.getColor(R.styleable.DrawableTextView_selectedTextColor, Color.BLACK);
         clickedTextColor = a.getColor(R.styleable.DrawableTextView_clickedTextColor, Color.BLACK);
 

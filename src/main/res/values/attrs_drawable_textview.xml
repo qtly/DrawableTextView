@@ -29,7 +29,6 @@
         <attr name="selectedColor" format="reference" />
         <attr name="clickedColor" format="reference" />
 
-        <attr name="defaultTextColor" format="color" />
         <attr name="selectedTextColor" format="color" />
         <attr name="clickedTextColor" format="color" />
     </declare-styleable>
