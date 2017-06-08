@@ -1,7 +1,7 @@
 # DrawableTextView
 A TextView with resizable drawables and easier to set clicked and selected drawable
 
-## v1.0.5<br>
+## v1.0.6<br>
 
 [ ![Download](https://api.bintray.com/packages/geejoe/maven/drawabletextview/images/download.svg) ](https://bintray.com/geejoe/maven/drawabletextview/_latestVersion)
 
@@ -10,7 +10,7 @@ A TextView with resizable drawables and easier to set clicked and selected drawa
 这是一个继承自TextView的组件，解决了原生TextView添加drawableLeft等不能在xml中定义大小的问题，<br>
 并且实现了可直接在xml中定义点击和选择时的drawable效果及字体颜色，特别适用于制作Tab和需要图片修饰的item<br>
 
-### 版本更新：V1.0.5
+### 版本更新：V1.0.6
 增加NavLayout，配合DrawableTextView使用，更方便地开发导航类控件，帮助你实现UI效果，把更多精力投入到逻辑开发中
 
 ## 效果图
@@ -22,7 +22,7 @@ A TextView with resizable drawables and easier to set clicked and selected drawa
 
 ```Java
 dependencies {
-    compile 'com.geejoe:drawabletextview:1.0.5'
+    compile 'com.geejoe:drawabletextview:1.0.6'
 }
 ```
 

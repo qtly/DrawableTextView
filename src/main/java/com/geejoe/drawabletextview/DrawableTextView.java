@@ -83,10 +83,14 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DrawableTextView);
 
-        leftDrawable = a.getDrawable(R.styleable.DrawableTextView_leftDrawable);
-        rightDrawable = a.getDrawable(R.styleable.DrawableTextView_rightDrawable);
-        topDrawable = a.getDrawable(R.styleable.DrawableTextView_topDrawable);
-        bottomDrawable = a.getDrawable(R.styleable.DrawableTextView_bottomDrawable);
+        leftDrawable = a.getDrawable(R.styleable.DrawableTextView_leftDrawable) == null ?
+                null : a.getDrawable(R.styleable.DrawableTextView_leftDrawable).mutate();
+        rightDrawable = a.getDrawable(R.styleable.DrawableTextView_rightDrawable) == null ?
+                null : a.getDrawable(R.styleable.DrawableTextView_rightDrawable).mutate();
+        topDrawable = a.getDrawable(R.styleable.DrawableTextView_topDrawable) == null ?
+                null : a.getDrawable(R.styleable.DrawableTextView_topDrawable).mutate();
+        bottomDrawable = a.getDrawable(R.styleable.DrawableTextView_bottomDrawable) == null ?
+                null : a.getDrawable(R.styleable.DrawableTextView_bottomDrawable).mutate();
 
         leftShowDrawable = leftDrawable;
         rightShowDrawable = rightDrawable;
@@ -222,28 +226,28 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
         if (selectable) {
             if (selected) {
                 if (isEasySelectedColor && leftDrawable != null) {
-                    setLeftDrawable(changeColor(leftDrawable,selectedColor));
+                    setLeftDrawable(changeColor(leftDrawable, selectedColor));
                     setTextColor(selectedColor);
                 } else if (leftSelectedDrawable != null && leftDrawable != null) {
                     setLeftDrawable(leftSelectedDrawable);
                     setTextColor(selectedTextColor);
                 }
                 if (isEasySelectedColor && rightDrawable != null) {
-                    setRightDrawable(changeColor(rightDrawable,selectedColor));
+                    setRightDrawable(changeColor(rightDrawable, selectedColor));
                     setTextColor(selectedColor);
                 } else if (rightSelectedDrawable != null && rightDrawable != null) {
                     setRightDrawable(rightSelectedDrawable);
                     setTextColor(selectedTextColor);
                 }
                 if (isEasySelectedColor && bottomDrawable != null) {
-                    setBottomDrawable(changeColor(bottomDrawable,selectedColor));
+                    setBottomDrawable(changeColor(bottomDrawable, selectedColor));
                     setTextColor(selectedColor);
                 } else if (bottomSelectedDrawable != null && bottomDrawable != null) {
                     setBottomDrawable(bottomSelectedDrawable);
                     setTextColor(selectedTextColor);
                 }
                 if (isEasySelectedColor && topDrawable != null) {
-                    setTopDrawable(changeColor(topDrawable,selectedColor));
+                    setTopDrawable(changeColor(topDrawable, selectedColor));
                     setTextColor(selectedColor);
                 } else if (topSelectedDrawable != null && topDrawable != null) {
                     setTopDrawable(topSelectedDrawable);
@@ -286,28 +290,28 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
             case MotionEvent.ACTION_DOWN:
                 if (!selectable) {
                     if (isEasyClickedColor && leftDrawable != null) {
-                        setLeftDrawable(changeColor(leftDrawable,clickedColor));
+                        setLeftDrawable(changeColor(leftDrawable, clickedColor));
                         setTextColor(clickedColor);
                     } else if (leftClickedDrawable != null && leftDrawable != null) {
                         setLeftDrawable(leftClickedDrawable);
                         setTextColor(clickedTextColor);
                     }
                     if (isEasyClickedColor && rightDrawable != null) {
-                        setRightDrawable(changeColor(rightDrawable,clickedColor));
+                        setRightDrawable(changeColor(rightDrawable, clickedColor));
                         setTextColor(clickedColor);
                     } else if (rightClickedDrawable != null && rightDrawable != null) {
                         setRightDrawable(rightClickedDrawable);
                         setTextColor(clickedTextColor);
                     }
                     if (isEasyClickedColor && topDrawable != null) {
-                        setTopDrawable(changeColor(topDrawable,clickedColor));
+                        setTopDrawable(changeColor(topDrawable, clickedColor));
                         setTextColor(clickedColor);
                     } else if (topClickedDrawable != null && topDrawable != null) {
                         setTopDrawable(topClickedDrawable);
                         setTextColor(clickedTextColor);
                     }
                     if (isEasyClickedColor && bottomDrawable != null) {
-                        setBottomDrawable(changeColor(bottomDrawable,clickedColor));
+                        setBottomDrawable(changeColor(bottomDrawable, clickedColor));
                         setTextColor(clickedColor);
                     } else if (bottomClickedDrawable != null && bottomDrawable != null) {
                         setBottomDrawable(bottomClickedDrawable);
