@@ -1,7 +1,7 @@
 # DrawableTextView
 A TextView with resizable drawables and easier to set clicked and selected drawable
 
-## v1.0.6<br>
+## v1.0.7<br>
 
 [ ![Download](https://api.bintray.com/packages/geejoe/maven/drawabletextview/images/download.svg) ](https://bintray.com/geejoe/maven/drawabletextview/_latestVersion)
 
@@ -10,7 +10,7 @@ A TextView with resizable drawables and easier to set clicked and selected drawa
 这是一个继承自TextView的组件，解决了原生TextView添加drawableLeft等不能在xml中定义大小的问题，<br>
 并且实现了可直接在xml中定义点击和选择时的drawable效果及字体颜色，特别适用于制作Tab和需要图片修饰的item<br>
 
-如果想要开发导航类Tab控件，可参考[EasyTab](https://github.com/GeeJoe/EasyTab)————更简单的Tab控件开发
+如果想要开发导航类Tab控件，可参考[https://github.com/GeeJoe/EasyTab](https://github.com/GeeJoe/EasyTab "更简单的Tab控件开发")
 
 ## 效果图
 ![](https://github.com/GeeJoe/DrawableTextView/raw/master/gif/drawabletextview.gif)
@@ -29,23 +29,50 @@ dependencies {
 
 #### 属性介绍
 
-leftDrawable 显示在TextView最左边的Drawable
-leftDrawableWidth 左边Drawable的宽度，必须设置，否则Drawable不显示
-leftDrawableHeight 左边Drawable的高度，必须设置，否则Drawable不显示
-leftSelectedDrawable 当选中时（调用setSelected(true)方法之后）显示的Drawable
-leftClickedDrawable 当点击时显示的Drawable，若同时设置了selectedDrawable，会被selectedDrawable覆盖
+```xml
+leftDrawable
+```
+显示在TextView最左边的Drawable<br>
+```xml
+leftDrawableWidth
+```
+左边Drawable的宽度，必须设置，否则Drawable不显示<br>
+```xml
+leftDrawableHeight
+```
+左边Drawable的高度，必须设置，否则Drawable不显示<br>
+```xml
+leftSelectedDrawable
+```
+当选中时（调用setSelected(true)方法之后）显示的Drawable<br>
+```xml
+leftClickedDrawable
+```
+当点击时显示的Drawable，若同时设置了selectedDrawable，会被selectedDrawable覆盖<br>
+```xml
+selectedTextColor
+```
+当被选中时（调用setSelected(true)方法之后）文字颜色<br>
+```xml
+clickedTextColor
+```
+当被点击时文字颜色<br>
+```xml
+selectedColor
+```
+当被选中时（调用setSelected(true)方法之后）对应的Drawable和文字会变成所选颜色，<br>
+设置了该属性之后，selectedDrawable和selectedTextColor将无效<br>
+```xml
+clickedColor
+```
+当被点击时，对应的Drawable和文字会变成所选颜色，<br>
+设置了该属性之后，clickedDrawable和clickedTextColor将无效<br>
 
-selectedTextColor 当被选中时（调用setSelected(true)方法之后）文字颜色
-clickedTextColor 当被点击时文字颜色
+下、右、上的Drawable和上述属性一样，只需要将上述属性中的left替换成对应的`bottom`|`right`|`top`即可
 
-selectedColor 当被选中时（调用setSelected(true)方法之后）对应的Drawable和文字会变成所选颜色，设置了该属性之后，selectedDrawable和selectedTextColor将无效
-clickedColor 当被点击时，对应的Drawable和文字会变成所选颜色，设置了该属性之后，clickedDrawable和clickedTextColor将无效
-
-下、右、上的Drawable和上述属性一样，只需要将上述属性中的left替换成对应的bottom|right|top即可
-
-由上述属性介绍可以知道，当想要实现点击或者选中时更换图片，则需要设置clickedDrawable和selectedDrawable，<br>
-想要改变文字颜色则设置clickedTextColor和selectedTextColor；<br>
-如果单纯只是改变图片和字体颜色则只需要设置clickedColor和selectedColor就可以轻松实现
+由上述属性介绍可以知道，当想要实现点击或者选中时更换图片，则需要设置`clickedDrawable`和`selectedDrawable`，<br>
+想要改变文字颜色则设置`clickedTextColor`和`selectedTextColor`；<br>
+如果单纯只是改变图片和字体颜色则只需要设置`clickedColor`和`selectedColor`就可以轻松实现。
 
 下面贴出上示动图中三种DrawableTextView的xml实现：
 第一种：
