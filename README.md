@@ -10,11 +10,10 @@ A TextView with resizable drawables and easier to set clicked and selected drawa
 这是一个继承自TextView的组件，解决了原生TextView添加drawableLeft等不能在xml中定义大小的问题，<br>
 并且实现了可直接在xml中定义点击和选择时的drawable效果及字体颜色，特别适用于制作Tab和需要图片修饰的item<br>
 
-### 版本更新：V1.0.6
-增加NavLayout，配合DrawableTextView使用，更方便地开发导航类控件，帮助你实现UI效果，把更多精力投入到逻辑开发中
+如果想要开发导航类Tab控件，可参考[EasyTab](https://github.com/GeeJoe/EasyTab)————更简单的Tab控件开发
 
 ## 效果图
-![](https://github.com/GeeJoe/DrawableTextView/raw/master/gif/2017-06-04_21_33_49.gif)
+![](https://github.com/GeeJoe/DrawableTextView/raw/master/gif/drawabletextview.gif)
 
 ### 添加依赖：
 
@@ -22,126 +21,83 @@ A TextView with resizable drawables and easier to set clicked and selected drawa
 
 ```Java
 dependencies {
-    compile 'com.geejoe:drawabletextview:1.0.6'
+    compile 'com.geejoe:drawabletextview:1.0.7'
 }
 ```
 
 ### 使用方法：
 
-示例：
-```xml
-<com.geejoe.drawabletextview.DrawableTextView
-        android:id="@+id/dt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="hello world"
-        app:leftDrawable="@drawable/ic_1"
-        app:leftDrawableHeight="20dp"   <!--一定要设置width和height,否则无效-->
-        app:leftDrawableWidth="20dp"
-        app:leftClickedDrawable="@drawable/ic_2"   <!--点击时的drawable-->
-        app:clickedTextColor="@color/colorPrimary" <!--点击时的字体颜色-->
-	app:leftSelectedDrawable="@drawable/ic_2"  <!--选中时的drawable-->
-        app:selectedTextColor="@color/colorPrimary"/><!--选中时的字体颜色-->  
-```
+#### 属性介绍
 
-##### 注意：当设置了selectedDrawable之后，clickedDrawable将失效（实际应用中也不会需要点击和选中时效果不一样吧...）<br>
-##### 设置selectedDrawable之后，只需要在代码中相应的位置执行setSelected(boolean selected)方法即可切换选中效果
+leftDrawable 显示在TextView最左边的Drawable
+leftDrawableWidth 左边Drawable的宽度，必须设置，否则Drawable不显示
+leftDrawableHeight 左边Drawable的高度，必须设置，否则Drawable不显示
+leftSelectedDrawable 当选中时（调用setSelected(true)方法之后）显示的Drawable
+leftClickedDrawable 当点击时显示的Drawable，若同时设置了selectedDrawable，会被selectedDrawable覆盖
 
-### v1.0.4 提供了更简单的开发导航Tab控件方法：
+selectedTextColor 当被选中时（调用setSelected(true)方法之后）文字颜色
+clickedTextColor 当被点击时文字颜色
 
-#### 1> 设置点击和选中效果一步解决：
-只需设置clickedColor或者selectedColor即可，例如：
+selectedColor 当被选中时（调用setSelected(true)方法之后）对应的Drawable和文字会变成所选颜色，设置了该属性之后，selectedDrawable和selectedTextColor将无效
+clickedColor 当被点击时，对应的Drawable和文字会变成所选颜色，设置了该属性之后，clickedDrawable和clickedTextColor将无效
+
+下、右、上的Drawable和上述属性一样，只需要将上述属性中的left替换成对应的bottom|right|top即可
+
+由上述属性介绍可以知道，当想要实现点击或者选中时更换图片，则需要设置clickedDrawable和selectedDrawable，<br>
+想要改变文字颜色则设置clickedTextColor和selectedTextColor；<br>
+如果单纯只是改变图片和字体颜色则只需要设置clickedColor和selectedColor就可以轻松实现
+
+下面贴出上示动图中三种DrawableTextView的xml实现：
+第一种：
 ```xml
 <com.geejoe.drawabletextview.DrawableTextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="nav1"
-            app:selectedColor="@color/colorPrimary"
-            app:topDrawable="@drawable/ic_1"
+            android:layout_height="48dp"
+            android:background="#fcfcfc"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp"
+            android:text="拥有leftDrawable和rightDrawable的textView"
+            android:textColor="@color/colorGray"
+            app:leftDrawable="@drawable/nav_chat_default"
+            app:leftDrawableHeight="10dp"
+            app:leftDrawableWidth="10dp"
+            app:rightDrawable="@drawable/more"
+            app:rightDrawableHeight="8dp"
+            app:rightDrawableWidth="8dp"
+            app:clickedColor="@color/colorPrimary" />
+```
+第二种：
+```xml
+<com.geejoe.drawabletextview.DrawableTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fcfcfc"
+            android:gravity="center_horizontal"
+            android:drawablePadding="10dp"
+            android:padding="5dp"
+            android:text="这是一个拥有topDrawable的TextView"
+            android:textColor="@color/colorGray"
+            app:topDrawable="@drawable/top_d"
             app:topDrawableHeight="10dp"
-            app:topDrawableWidth="10dp" />
+            app:topDrawableWidth="120dp"
+            app:clickedColor="@color/colorPrimary" />
 ```
-这样就可以在选中时，文字和图片颜色变为ColorPrimary了
-
-#### 2> 新增NavLayout，实现导航Tab单选效果
-很多时候，开发导航栏时，需要实现选中其中一个导航，使其他呈现未选中状态，这时候只需要使用NavLayout就可以轻松实现，例如：
-
+第三种：
 ```xml
-<com.geejoe.drawabletextview.NavLayout
-        android:id="@+id/nav_v"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <com.geejoe.drawabletextview.DrawableTextView
+<com.geejoe.drawabletextview.DrawableTextView
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:background="#fcfcfc"
+            android:gravity="center_horizontal"
             android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:paddingStart="5dp"
-            android:text="nav1"
-            app:leftDrawable="@drawable/ic_1"
-            app:leftDrawableHeight="10dp"
-            app:leftDrawableWidth="10dp"
-            app:selectedColor="@color/colorPrimary" />
-
-        <com.geejoe.drawabletextview.DrawableTextView
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="5dp"
-            android:background="#fcfcfc"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:paddingStart="5dp"
-            android:text="nav2"
-            app:leftDrawable="@drawable/ic_1"
-            app:leftDrawableHeight="10dp"
-            app:leftDrawableWidth="10dp"
-            app:selectedColor="@color/colorPrimary" />
-
-        <com.geejoe.drawabletextview.DrawableTextView
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="5dp"
-            android:background="#fcfcfc"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:paddingStart="5dp"
-            android:text="nav3"
-            app:leftDrawable="@drawable/ic_1"
-            app:leftDrawableHeight="10dp"
-            app:leftDrawableWidth="10dp"
-            app:selectedColor="@color/colorPrimary" />
-
-        <com.geejoe.drawabletextview.DrawableTextView
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="5dp"
-            android:background="#fcfcfc"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:paddingStart="5dp"
-            android:text="nav4"
-            app:leftDrawable="@drawable/ic_1"
-            app:leftDrawableHeight="10dp"
-            app:leftDrawableWidth="10dp"
-            app:selectedColor="@color/colorPrimary" />
-
-    </com.geejoe.drawabletextview.NavLayout>
+            android:padding="5dp"
+            android:text="这是一个拥有bottomDrawable的TextView"
+            android:textColor="@color/colorGray"
+            app:bottomDrawable="@drawable/down"
+            app:bottomDrawableHeight="10dp"
+            app:bottomDrawableWidth="10dp"
+            app:clickedColor="@color/colorPrimary" />
 ```
-上面的代码，在NavLayout下有四个DrawableTextView，效果如图：<br>
-
-![](https://github.com/GeeJoe/DrawableTextView/raw/master/gif/2017-06-05_20_12_33.gif)
-
-图中上面部分是竖直布局的导航<br>
-图中下面部分是水平布局的导航<br>
-切换布局方向只需要设置NavLayout的orientation属性<br>
-
-#### 3> 提供OnNavSelectedListener接口,不用再设置繁琐的OnClickListener
-NavLayout提供OnNavSelectedListener接口，实现该接口可以监听导航点击事件
-
-#### 4> setDefaultSelected(int index)设置默认选中
-NavLayout的setDefaultSelected(int index)设置默认选中导航，index为NavLayout中添加的DrawableTextView顺序，0为第一个

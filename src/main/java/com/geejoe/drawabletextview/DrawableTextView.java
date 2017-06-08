@@ -5,9 +5,11 @@ package com.geejoe.drawabletextview;
  */
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
@@ -41,6 +43,11 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
     private Drawable topShowDrawable;
     private Drawable bottomShowDrawable;
 
+    private Drawable l_dc;
+    private Drawable r_dc;
+    private Drawable t_dc;
+    private Drawable b_dc;
+
     private Boolean selectable = false;
 
     private int leftDrawableWidth;
@@ -59,10 +66,13 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
     private int selectedColor;
     private int clickedColor;
 
+    private int leftSelfColor;
+    private int rightSelfColor;
+    private int topSelfColor;
+    private int bottomSelfColor;
+
     private boolean isEasySelectedColor = false;
     private boolean isEasyClickedColor = false;
-
-    private OnDTClickListener onDTClickListener;
 
     public DrawableTextView(Context context) {
         this(context, null, 0);
@@ -116,8 +126,8 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
         bottomDrawableHeight = dp2px(context, a.getDimensionPixelSize(R.styleable.DrawableTextView_bottomDrawableHeight, 0));
 
         defaultTextColor = getCurrentTextColor();
-        selectedTextColor = a.getColor(R.styleable.DrawableTextView_selectedTextColor, Color.BLACK);
-        clickedTextColor = a.getColor(R.styleable.DrawableTextView_clickedTextColor, Color.BLACK);
+        selectedTextColor = a.getColor(R.styleable.DrawableTextView_selectedTextColor, defaultTextColor);
+        clickedTextColor = a.getColor(R.styleable.DrawableTextView_clickedTextColor, defaultTextColor);
 
         selectedColor = a.getColor(R.styleable.DrawableTextView_selectedColor, -1);
         clickedColor = a.getColor(R.styleable.DrawableTextView_clickedColor, -1);
@@ -138,6 +148,48 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
         setOnTouchListener(this);
     }
 
+    /**
+     * 获取纯色图片颜色
+     *
+     * @param drawable
+     * @return
+     */
+    private int getDrawableColor(Drawable drawable) {
+        int bestColor = 0;
+        if (drawable != null) {
+            BitmapDrawable bd = (BitmapDrawable) drawable;
+            Bitmap bitmap = bd.getBitmap();
+            int pixelColor;
+            int x = bitmap.getWidth();
+            int y = bitmap.getHeight();
+            for (int i = x / 2; i > 0; i--) {
+                for (int j = y / 2; j > 0; j--) {
+                    pixelColor = bitmap.getPixel(i, j);
+                    int A = Color.alpha(pixelColor);
+                    if (A != 0 && A > Color.alpha(bestColor)) {
+                        bestColor = pixelColor;
+                    }
+                    if (A == 255) {
+                        return bestColor;
+                    }
+                }
+            }
+            for (int i = x / 2; i < x; i++) {
+                for (int j = y / 2; j < y; j++) {
+                    pixelColor = bitmap.getPixel(i, j);
+                    int A = Color.alpha(pixelColor);
+                    if (A != 0 && A > Color.alpha(bestColor)) {
+                        bestColor = pixelColor;
+                    }
+                    if (A == 255) {
+                        return bestColor;
+                    }
+                }
+            }
+        }
+        return bestColor;
+    }
+
     private int dp2px(Context context, int dp) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
@@ -146,6 +198,13 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
     private void initSize() {
         if (leftDrawable != null) {
             leftDrawable.setBounds(0, 0, leftDrawableWidth, leftDrawableHeight);
+            leftSelfColor = getDrawableColor(leftDrawable);
+            l_dc = DrawableCompat.wrap(leftDrawable);
+            DrawableCompat.setTintList(l_dc, new ColorStateList(
+                    new int[][]{{android.R.attr.state_selected}, {android.R.attr.state_pressed}, {}},
+                    new int[]{selectedColor == -1 ? leftSelfColor : selectedColor,
+                            clickedColor == -1 ? leftSelfColor : clickedColor,
+                            leftSelfColor}));
         }
         if (leftClickedDrawable != null) {
             leftClickedDrawable.setBounds(0, 0, leftDrawableWidth, leftDrawableHeight);
@@ -159,6 +218,13 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
 
         if (rightDrawable != null) {
             rightDrawable.setBounds(0, 0, rightDrawableWidth, rightDrawableHeight);
+            rightSelfColor = getDrawableColor(rightDrawable);
+            r_dc = DrawableCompat.wrap(rightDrawable);
+            DrawableCompat.setTintList(r_dc, new ColorStateList(
+                    new int[][]{{android.R.attr.state_selected}, {android.R.attr.state_pressed}, {}},
+                    new int[]{selectedColor == -1 ? rightSelfColor : selectedColor,
+                            clickedColor == -1 ? rightSelfColor : clickedColor,
+                            rightSelfColor}));
         }
         if (rightClickedDrawable != null) {
             rightClickedDrawable.setBounds(0, 0, rightDrawableWidth, rightDrawableHeight);
@@ -172,6 +238,13 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
 
         if (topDrawable != null) {
             topDrawable.setBounds(0, 0, topDrawableWidth, topDrawableHeight);
+            topSelfColor = getDrawableColor(topDrawable);
+            t_dc = DrawableCompat.wrap(topDrawable);
+            DrawableCompat.setTintList(t_dc, new ColorStateList(
+                    new int[][]{{android.R.attr.state_selected}, {android.R.attr.state_pressed}, {}},
+                    new int[]{selectedColor == -1 ? topSelfColor : selectedColor,
+                            clickedColor == -1 ? topSelfColor : clickedColor,
+                            topSelfColor}));
         }
         if (topClickedDrawable != null) {
             topClickedDrawable.setBounds(0, 0, topDrawableWidth, topDrawableHeight);
@@ -185,6 +258,13 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
 
         if (bottomDrawable != null) {
             bottomDrawable.setBounds(0, 0, bottomDrawableWidth, bottomDrawableHeight);
+            bottomSelfColor = getDrawableColor(bottomDrawable);
+            b_dc = DrawableCompat.wrap(bottomDrawable);
+            DrawableCompat.setTintList(b_dc, new ColorStateList(
+                    new int[][]{{android.R.attr.state_selected}, {android.R.attr.state_pressed}, {}},
+                    new int[]{selectedColor == -1 ? bottomSelfColor : selectedColor,
+                            clickedColor == -1 ? bottomSelfColor : clickedColor,
+                            bottomSelfColor}));
         }
         if (bottomClickedDrawable != null) {
             bottomClickedDrawable.setBounds(0, 0, bottomDrawableWidth, bottomDrawableHeight);
@@ -195,11 +275,22 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
         if (bottomShowDrawable != null) {
             bottomShowDrawable.setBounds(0, 0, bottomDrawableWidth, bottomDrawableHeight);
         }
+
+        if (isEasyClickedColor || isEasySelectedColor) {
+            leftShowDrawable = l_dc;
+            rightShowDrawable = r_dc;
+            topShowDrawable = t_dc;
+            bottomShowDrawable = b_dc;
+        }
+
         draw();
     }
 
     private void draw() {
-        setCompoundDrawables(this.leftShowDrawable, this.topShowDrawable, this.rightShowDrawable, this.bottomShowDrawable);
+        setCompoundDrawables(this.leftShowDrawable,
+                this.topShowDrawable,
+                this.rightShowDrawable,
+                this.bottomShowDrawable);
     }
 
     public void setLeftDrawable(Drawable drawable) {
@@ -226,120 +317,119 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
         if (selectable) {
             if (selected) {
                 if (isEasySelectedColor && leftDrawable != null) {
-                    setLeftDrawable(changeColor(leftDrawable, selectedColor));
+                    super.setSelected(true);
                     setTextColor(selectedColor);
                 } else if (leftSelectedDrawable != null && leftDrawable != null) {
                     setLeftDrawable(leftSelectedDrawable);
                     setTextColor(selectedTextColor);
                 }
                 if (isEasySelectedColor && rightDrawable != null) {
-                    setRightDrawable(changeColor(rightDrawable, selectedColor));
+                    super.setSelected(true);
                     setTextColor(selectedColor);
                 } else if (rightSelectedDrawable != null && rightDrawable != null) {
                     setRightDrawable(rightSelectedDrawable);
                     setTextColor(selectedTextColor);
                 }
                 if (isEasySelectedColor && bottomDrawable != null) {
-                    setBottomDrawable(changeColor(bottomDrawable, selectedColor));
+                    super.setSelected(true);
                     setTextColor(selectedColor);
                 } else if (bottomSelectedDrawable != null && bottomDrawable != null) {
                     setBottomDrawable(bottomSelectedDrawable);
                     setTextColor(selectedTextColor);
                 }
                 if (isEasySelectedColor && topDrawable != null) {
-                    setTopDrawable(changeColor(topDrawable, selectedColor));
+                    super.setSelected(true);
                     setTextColor(selectedColor);
                 } else if (topSelectedDrawable != null && topDrawable != null) {
                     setTopDrawable(topSelectedDrawable);
                     setTextColor(selectedTextColor);
                 }
             } else {
-                if ((leftSelectedDrawable != null || isEasySelectedColor) && leftDrawable != null) {
-                    setLeftDrawable(resumeColor(leftDrawable));
+                if (isEasySelectedColor && leftDrawable != null) {
+                    super.setSelected(false);
+                } else if (leftSelectedDrawable != null && leftDrawable != null) {
+                    setLeftDrawable(leftDrawable);
                 }
-                if ((rightSelectedDrawable != null || isEasySelectedColor) && rightDrawable != null) {
-                    setRightDrawable(resumeColor(rightDrawable));
+                if (isEasySelectedColor && rightDrawable != null) {
+                    super.setSelected(false);
+                } else if (rightSelectedDrawable != null && rightDrawable != null) {
+                    setRightDrawable(rightDrawable);
                 }
-                if ((topSelectedDrawable != null || isEasySelectedColor) && topDrawable != null) {
-                    setTopDrawable(resumeColor(topDrawable));
+                if (isEasySelectedColor && bottomDrawable != null) {
+                    super.setSelected(false);
+                } else if (bottomSelectedDrawable != null && bottomDrawable != null) {
+                    setBottomDrawable(bottomDrawable);
                 }
-                if ((bottomSelectedDrawable != null || isEasySelectedColor) && bottomDrawable != null) {
-                    setBottomDrawable(resumeColor(bottomDrawable));
+                if (isEasySelectedColor && topDrawable != null) {
+                    super.setSelected(false);
+                } else if (topSelectedDrawable != null && topDrawable != null) {
+                    setTopDrawable(topDrawable);
                 }
                 setTextColor(defaultTextColor);
             }
         }
     }
 
-    private Drawable changeColor(Drawable drawable, int color) {
-        Drawable dc = DrawableCompat.wrap(drawable);
-        DrawableCompat.setTintMode(dc, PorterDuff.Mode.SRC_IN);
-        DrawableCompat.setTint(dc, color);
-        return dc;
+    private void change(){
+        if (!selectable) {
+            if (isEasyClickedColor && leftDrawable != null) {
+                setTextColor(clickedColor);
+            } else if (leftClickedDrawable != null && leftDrawable != null) {
+                setLeftDrawable(leftClickedDrawable);
+                setTextColor(clickedTextColor);
+            }
+            if (isEasyClickedColor && rightDrawable != null) {
+                setTextColor(clickedColor);
+            } else if (rightClickedDrawable != null && rightDrawable != null) {
+                setRightDrawable(rightClickedDrawable);
+                setTextColor(clickedTextColor);
+            }
+            if (isEasyClickedColor && topDrawable != null) {
+                setTextColor(clickedColor);
+            } else if (topClickedDrawable != null && topDrawable != null) {
+                setTopDrawable(topClickedDrawable);
+                setTextColor(clickedTextColor);
+            }
+            if (isEasyClickedColor && bottomDrawable != null) {
+                setTextColor(clickedColor);
+            } else if (bottomClickedDrawable != null && bottomDrawable != null) {
+                setBottomDrawable(bottomClickedDrawable);
+                setTextColor(clickedTextColor);
+            }
+        }
     }
 
-    private Drawable resumeColor(Drawable drawable) {
-        Drawable dc = DrawableCompat.wrap(drawable);
-        DrawableCompat.setTintMode(dc, PorterDuff.Mode.DST_IN);
-        return dc;
+    private void resume(){
+        if (!selectable) {
+            if (leftClickedDrawable != null && !isEasyClickedColor && leftDrawable != null) {
+                setLeftDrawable(leftDrawable);
+            }
+            if (rightClickedDrawable != null && !isEasyClickedColor && rightDrawable != null) {
+                setRightDrawable(rightDrawable);
+            }
+            if (topClickedDrawable != null && !isEasyClickedColor && topDrawable != null) {
+                setTopDrawable(topDrawable);
+            }
+            if (bottomClickedDrawable != null && !isEasyClickedColor && bottomDrawable != null) {
+                setBottomDrawable(bottomDrawable);
+            }
+            setTextColor(defaultTextColor);
+        }
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (!selectable) {
-                    if (isEasyClickedColor && leftDrawable != null) {
-                        setLeftDrawable(changeColor(leftDrawable, clickedColor));
-                        setTextColor(clickedColor);
-                    } else if (leftClickedDrawable != null && leftDrawable != null) {
-                        setLeftDrawable(leftClickedDrawable);
-                        setTextColor(clickedTextColor);
-                    }
-                    if (isEasyClickedColor && rightDrawable != null) {
-                        setRightDrawable(changeColor(rightDrawable, clickedColor));
-                        setTextColor(clickedColor);
-                    } else if (rightClickedDrawable != null && rightDrawable != null) {
-                        setRightDrawable(rightClickedDrawable);
-                        setTextColor(clickedTextColor);
-                    }
-                    if (isEasyClickedColor && topDrawable != null) {
-                        setTopDrawable(changeColor(topDrawable, clickedColor));
-                        setTextColor(clickedColor);
-                    } else if (topClickedDrawable != null && topDrawable != null) {
-                        setTopDrawable(topClickedDrawable);
-                        setTextColor(clickedTextColor);
-                    }
-                    if (isEasyClickedColor && bottomDrawable != null) {
-                        setBottomDrawable(changeColor(bottomDrawable, clickedColor));
-                        setTextColor(clickedColor);
-                    } else if (bottomClickedDrawable != null && bottomDrawable != null) {
-                        setBottomDrawable(bottomClickedDrawable);
-                        setTextColor(clickedTextColor);
-                    }
+                change();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if(!isTouchPointInView(this,(int)event.getRawX(),(int)event.getRawY())){
+                    resume();
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (isTouchPointInView(this, (int) event.getRawX(), (int) event.getRawY())) {
-                    if (onDTClickListener != null) {
-                        onDTClickListener.onDTClick(this);
-                    }
-                }
-                if (!selectable) {
-                    if ((leftClickedDrawable != null || isEasyClickedColor) && leftDrawable != null) {
-                        setLeftDrawable(resumeColor(leftDrawable));
-                    }
-                    if ((rightClickedDrawable != null || isEasyClickedColor) && rightDrawable != null) {
-                        setRightDrawable(resumeColor(rightDrawable));
-                    }
-                    if ((topClickedDrawable != null || isEasyClickedColor) && topDrawable != null) {
-                        setTopDrawable(resumeColor(topDrawable));
-                    }
-                    if ((bottomClickedDrawable != null || isEasyClickedColor) && bottomDrawable != null) {
-                        setBottomDrawable(resumeColor(bottomDrawable));
-                    }
-                    setTextColor(defaultTextColor);
-                }
+                resume();
                 break;
         }
         return false;
@@ -362,11 +452,4 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
         return false;
     }
 
-    public void setOnDTClickListener(OnDTClickListener onDTClickListener) {
-        this.onDTClickListener = onDTClickListener;
-    }
-
-    public interface OnDTClickListener {
-        void onDTClick(View v);
-    }
 }

@@ -43,7 +43,7 @@ ext {
     siteUrl = 'https://github.com/GeeJoe/DrawableTextView'
     gitUrl = 'https://github.com/GeeJoe/DrawableTextView.git'
 
-    libraryVersion = '1.0.6'
+    libraryVersion = '1.0.7'
 
     developerId = 'geejoe'
     developerName = 'GeeJoe'
