@@ -1,7 +1,7 @@
 # DrawableTextView
 A TextView with resizable drawables and easier to set clicked and selected drawable
 
-## v1.0.7<br>
+## v1.1.0<br>
 
 [ ![Download](https://api.bintray.com/packages/geejoe/maven/drawabletextview/images/download.svg) ](https://bintray.com/geejoe/maven/drawabletextview/_latestVersion)
 
@@ -21,7 +21,7 @@ A TextView with resizable drawables and easier to set clicked and selected drawa
 
 ```Java
 dependencies {
-    compile 'com.geejoe:drawabletextview:1.0.7'
+    compile 'com.geejoe:drawabletextview:1.1.0'
 }
 ```
 

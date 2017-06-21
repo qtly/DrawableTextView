@@ -13,7 +13,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -116,14 +115,14 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
         topClickedDrawable = a.getDrawable(R.styleable.DrawableTextView_topClickedDrawable);
         topSelectedDrawable = a.getDrawable(R.styleable.DrawableTextView_topSelectedDrawable);
 
-        leftDrawableWidth = dp2px(context, a.getDimensionPixelSize(R.styleable.DrawableTextView_leftDrawableWidth, 0));
-        leftDrawableHeight = dp2px(context, a.getDimensionPixelSize(R.styleable.DrawableTextView_leftDrawableHeight, 0));
-        rightDrawableWidth = dp2px(context, a.getDimensionPixelSize(R.styleable.DrawableTextView_rightDrawableWidth, 0));
-        rightDrawableHeight = dp2px(context, a.getDimensionPixelSize(R.styleable.DrawableTextView_rightDrawableHeight, 0));
-        topDrawableWidth = dp2px(context, a.getDimensionPixelSize(R.styleable.DrawableTextView_topDrawableWidth, 0));
-        topDrawableHeight = dp2px(context, a.getDimensionPixelSize(R.styleable.DrawableTextView_topDrawableHeight, 0));
-        bottomDrawableWidth = dp2px(context, a.getDimensionPixelSize(R.styleable.DrawableTextView_bottomDrawableWidth, 0));
-        bottomDrawableHeight = dp2px(context, a.getDimensionPixelSize(R.styleable.DrawableTextView_bottomDrawableHeight, 0));
+        leftDrawableWidth = a.getDimensionPixelSize(R.styleable.DrawableTextView_leftDrawableWidth, 0);
+        leftDrawableHeight = a.getDimensionPixelSize(R.styleable.DrawableTextView_leftDrawableHeight, 0);
+        rightDrawableWidth = a.getDimensionPixelSize(R.styleable.DrawableTextView_rightDrawableWidth, 0);
+        rightDrawableHeight = a.getDimensionPixelSize(R.styleable.DrawableTextView_rightDrawableHeight, 0);
+        topDrawableWidth = a.getDimensionPixelSize(R.styleable.DrawableTextView_topDrawableWidth, 0);
+        topDrawableHeight = a.getDimensionPixelSize(R.styleable.DrawableTextView_topDrawableHeight, 0);
+        bottomDrawableWidth = a.getDimensionPixelSize(R.styleable.DrawableTextView_bottomDrawableWidth, 0);
+        bottomDrawableHeight = a.getDimensionPixelSize(R.styleable.DrawableTextView_bottomDrawableHeight, 0);
 
         defaultTextColor = getCurrentTextColor();
         selectedTextColor = a.getColor(R.styleable.DrawableTextView_selectedTextColor, defaultTextColor);
@@ -188,11 +187,6 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
             }
         }
         return bestColor;
-    }
-
-    private int dp2px(Context context, int dp) {
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     private void initSize() {
@@ -370,7 +364,7 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
         }
     }
 
-    private void change(){
+    private void change() {
         if (!selectable) {
             if (isEasyClickedColor && leftDrawable != null) {
                 setTextColor(clickedColor);
@@ -399,7 +393,7 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
         }
     }
 
-    private void resume(){
+    private void resume() {
         if (!selectable) {
             if (leftClickedDrawable != null && !isEasyClickedColor && leftDrawable != null) {
                 setLeftDrawable(leftDrawable);
@@ -424,7 +418,7 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
                 change();
                 break;
             case MotionEvent.ACTION_MOVE:
-                if(!isTouchPointInView(this,(int)event.getRawX(),(int)event.getRawY())){
+                if (!isTouchPointInView(this, (int) event.getRawX(), (int) event.getRawY())) {
                     resume();
                 }
                 break;
