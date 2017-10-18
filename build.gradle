@@ -30,29 +30,29 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-//ext {
-//    bintrayRepo = 'maven'
-//    bintrayName = 'drawabletextview'
-//
-//    publishedGroupId = 'com.geejoe'
-//    libraryName = 'DrawableTextView'
-//    artifact = 'drawabletextview'
-//
-//    libraryDescription = 'A TextView with resizable drawables and easier to set clicked and selected drawable'
-//
-//    siteUrl = 'https://github.com/GeeJoe/DrawableTextView'
-//    gitUrl = 'https://github.com/GeeJoe/DrawableTextView.git'
-//
-//    libraryVersion = '1.1.0'
-//
-//    developerId = 'geejoe'
-//    developerName = 'GeeJoe'
-//    developerEmail = 'geejoe_developer@outlook.com'
-//
-//    licenseName = 'The Apache Software License, Version 2.0'
-//    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-//    allLicenses = ["Apache-2.0"]
-//}
-//
-//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'drawabletextview'
+
+    publishedGroupId = 'com.geejoe'
+    libraryName = 'DrawableTextView'
+    artifact = 'drawabletextview'
+
+    libraryDescription = 'A TextView with resizable drawables and easier to set clicked and selected drawable'
+
+    siteUrl = 'https://github.com/GeeJoe/DrawableTextView'
+    gitUrl = 'https://github.com/GeeJoe/DrawableTextView.git'
+
+    libraryVersion = '1.1.1'
+
+    developerId = 'geejoe'
+    developerName = 'GeeJoe'
+    developerEmail = 'geejoe_developer@outlook.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'

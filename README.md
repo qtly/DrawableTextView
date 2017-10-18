@@ -1,8 +1,6 @@
 # DrawableTextView
 A TextView with resizable drawables and easier to set clicked and selected drawable
 
-## v1.1.0<br>
-
 [ ![Download](https://api.bintray.com/packages/geejoe/maven/drawabletextview/images/download.svg) ](https://bintray.com/geejoe/maven/drawabletextview/_latestVersion)
 
 ### 简介：
@@ -21,7 +19,7 @@ A TextView with resizable drawables and easier to set clicked and selected drawa
 
 ```Java
 dependencies {
-    compile 'com.geejoe:drawabletextview:1.1.0'
+    compile 'com.geejoe:drawabletextview:1.1.1'
 }
 ```
 
@@ -73,6 +71,8 @@ clickedColor
 由上述属性介绍可以知道，当想要实现点击或者选中时更换图片，则需要设置`clickedDrawable`和`selectedDrawable`，<br>
 想要改变文字颜色则设置`clickedTextColor`和`selectedTextColor`；<br>
 如果单纯只是改变图片和字体颜色则只需要设置`clickedColor`和`selectedColor`就可以轻松实现。
+
+> 注意：要实现点击效果需设置`clickable = true`，此时会导致外层布局无法响应点击事件（事件在这里被消耗）;若单纯想显示drawable而不需要点击效果建议设置`clickable = false`（默认为false）
 
 下面贴出上示动图中三种DrawableTextView的xml实现：
 第一种：

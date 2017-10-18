@@ -12,16 +12,16 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.TextView;
 
 /**
  * Created by JoeLee on 2017/5/27 0027 12:03.
  */
 
-public class DrawableTextView extends TextView implements View.OnTouchListener {
+public class DrawableTextView extends AppCompatTextView {
 
     private Drawable leftDrawable;
     private Drawable rightDrawable;
@@ -88,8 +88,6 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        setClickable(true);
-
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DrawableTextView);
 
         leftDrawable = a.getDrawable(R.styleable.DrawableTextView_leftDrawable) == null ?
@@ -143,8 +141,6 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
                 topSelectedDrawable != null || bottomSelectedDrawable != null) {
             selectable = true;
         }
-
-        setOnTouchListener(this);
     }
 
     /**
@@ -307,6 +303,29 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
         draw();
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        boolean isClickable = isClickable();
+        if (!isClickable) {
+            return isClickable;
+        } else {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    change();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (!isTouchPointInView(this, (int) event.getRawX(), (int) event.getRawY())) {
+                        resume();
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    resume();
+                    break;
+            }
+            return super.onTouchEvent(event);
+        }
+    }
+
     public void setSelected(boolean selected) {
         if (selectable) {
             if (selected) {
@@ -409,24 +428,6 @@ public class DrawableTextView extends TextView implements View.OnTouchListener {
             }
             setTextColor(defaultTextColor);
         }
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                change();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if (!isTouchPointInView(this, (int) event.getRawX(), (int) event.getRawY())) {
-                    resume();
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                resume();
-                break;
-        }
-        return false;
     }
 
     private boolean isTouchPointInView(View view, int x, int y) {
