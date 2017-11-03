@@ -19,7 +19,7 @@ A TextView with resizable drawables and easier to set clicked and selected drawa
 
 ```Java
 dependencies {
-    compile 'com.geejoe:drawabletextview:1.1.1'
+    compile 'com.geejoe:drawabletextview:1.1.2'
 }
 ```
 

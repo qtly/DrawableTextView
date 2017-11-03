@@ -99,11 +99,6 @@ public class DrawableTextView extends AppCompatTextView {
         bottomDrawable = a.getDrawable(R.styleable.DrawableTextView_bottomDrawable) == null ?
                 null : a.getDrawable(R.styleable.DrawableTextView_bottomDrawable).mutate();
 
-        leftShowDrawable = leftDrawable;
-        rightShowDrawable = rightDrawable;
-        topShowDrawable = topDrawable;
-        bottomShowDrawable = bottomDrawable;
-
         leftClickedDrawable = a.getDrawable(R.styleable.DrawableTextView_leftClickedDrawable);
         leftSelectedDrawable = a.getDrawable(R.styleable.DrawableTextView_leftSelectedDrawable);
         rightClickedDrawable = a.getDrawable(R.styleable.DrawableTextView_rightClickedDrawable);
@@ -128,6 +123,16 @@ public class DrawableTextView extends AppCompatTextView {
 
         selectedColor = a.getColor(R.styleable.DrawableTextView_selectedColor, -1);
         clickedColor = a.getColor(R.styleable.DrawableTextView_clickedColor, -1);
+        a.recycle();
+
+        reLoad();
+    }
+
+    private void reLoad() {
+        leftShowDrawable = leftDrawable;
+        rightShowDrawable = rightDrawable;
+        topShowDrawable = topDrawable;
+        bottomShowDrawable = bottomDrawable;
 
         if (selectedColor != -1) {
             isEasySelectedColor = true;
@@ -135,7 +140,6 @@ public class DrawableTextView extends AppCompatTextView {
         if (clickedColor != -1) {
             isEasyClickedColor = true;
         }
-        a.recycle();
 
         if (isEasySelectedColor || leftSelectedDrawable != null || rightSelectedDrawable != null ||
                 topSelectedDrawable != null || bottomSelectedDrawable != null) {
@@ -272,7 +276,6 @@ public class DrawableTextView extends AppCompatTextView {
             topShowDrawable = t_dc;
             bottomShowDrawable = b_dc;
         }
-
         draw();
     }
 
@@ -281,26 +284,31 @@ public class DrawableTextView extends AppCompatTextView {
                 this.topShowDrawable,
                 this.rightShowDrawable,
                 this.bottomShowDrawable);
+        invalidate();
     }
 
     public void setLeftDrawable(Drawable drawable) {
-        this.leftShowDrawable = drawable;
-        draw();
+        this.leftDrawable = drawable;
+        reLoad();
+        initSize();
     }
 
     public void setRightDrawable(Drawable drawable) {
-        this.rightShowDrawable = drawable;
-        draw();
+        this.rightDrawable = drawable;
+        reLoad();
+        initSize();
     }
 
     public void setTopDrawable(Drawable drawable) {
-        this.topShowDrawable = drawable;
-        draw();
+        this.topDrawable = drawable;
+        reLoad();
+        initSize();
     }
 
     public void setBottomDrawable(Drawable drawable) {
-        this.bottomShowDrawable = drawable;
-        draw();
+        this.bottomDrawable = drawable;
+        reLoad();
+        initSize();
     }
 
     @Override
