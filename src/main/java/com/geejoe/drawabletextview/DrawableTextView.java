@@ -337,30 +337,38 @@ public class DrawableTextView extends AppCompatTextView {
     public void setSelected(boolean selected) {
         if (selectable) {
             if (selected) {
-                if (isEasySelectedColor && leftDrawable != null) {
-                    super.setSelected(true);
+                if (isEasySelectedColor) {
                     setTextColor(selectedColor);
+                    if (leftDrawable != null) {
+                        super.setSelected(true);
+                    }
                 } else if (leftSelectedDrawable != null && leftDrawable != null) {
                     setLeftDrawable(leftSelectedDrawable);
                     setTextColor(selectedTextColor);
                 }
-                if (isEasySelectedColor && rightDrawable != null) {
-                    super.setSelected(true);
+                if (isEasySelectedColor) {
                     setTextColor(selectedColor);
+                    if (rightDrawable != null) {
+                        super.setSelected(true);
+                    }
                 } else if (rightSelectedDrawable != null && rightDrawable != null) {
                     setRightDrawable(rightSelectedDrawable);
                     setTextColor(selectedTextColor);
                 }
-                if (isEasySelectedColor && bottomDrawable != null) {
-                    super.setSelected(true);
+                if (isEasySelectedColor) {
                     setTextColor(selectedColor);
+                    if (bottomDrawable != null) {
+                        super.setSelected(true);
+                    }
                 } else if (bottomSelectedDrawable != null && bottomDrawable != null) {
                     setBottomDrawable(bottomSelectedDrawable);
                     setTextColor(selectedTextColor);
                 }
-                if (isEasySelectedColor && topDrawable != null) {
-                    super.setSelected(true);
+                if (isEasySelectedColor) {
                     setTextColor(selectedColor);
+                    if (topDrawable != null) {
+                        super.setSelected(true);
+                    }
                 } else if (topSelectedDrawable != null && topDrawable != null) {
                     setTopDrawable(topSelectedDrawable);
                     setTextColor(selectedTextColor);
